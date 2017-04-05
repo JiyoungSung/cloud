@@ -8,22 +8,26 @@ import javax.swing.*;
 
 class MyFrame01  extends JFrame implements ActionListener{
 	
-	private JFileChooser jfc = new JFileChooser();
-	private JButton b1 = new JButton("파일선택");
-	private JButton b2 = new JButton("파일전송");
-	private TextField tf = new TextField(25);
+	private JFileChooser jfc;
+	private JButton b1;
+	private JButton b2;
+	private JTextField jtf;
 	private String file;
 	private String directory;
 	private FileDialog fd;
 	
-	private InetAddress ia = null;
-	private Socket so = null;
+	private InetAddress ia;
+	private Socket so;
 	
 	public void init(){
+		jfc = new JFileChooser();
+		b1 = new JButton("파일선택");
+		b2 = new JButton("파일전송");
+		jtf = new JTextField(25);
 		Container con = this.getContentPane();
 		con.setLayout(new BorderLayout());
 		con.add("North", b1);
-		con.add("Center", tf);
+		con.add("Center", jtf);
 		con.add("South", b2);   
 		con.setVisible(true);
 	}
@@ -55,7 +59,7 @@ class MyFrame01  extends JFrame implements ActionListener{
 			fd.setVisible(true);
 			directory = fd.getDirectory();
 			file = fd.getFile();
-			tf.setText(directory+file);
+			jtf.setText(directory+file);
 			
 		}
 		
@@ -67,13 +71,14 @@ class MyFrame01  extends JFrame implements ActionListener{
 				bw.write(file+"\n"); 
 				bw.flush();
 				 
-				DataInputStream dis=new DataInputStream(new FileInputStream(new File(tf.getText())));
+				DataInputStream dis=new DataInputStream(new FileInputStream(new File(jtf.getText())));
 				DataOutputStream dos=new DataOutputStream(so.getOutputStream());
 				 
 				int b=0;
 				 
 				while((b=dis.read()) != -1 ){
-					dos.write(b); dos.flush();
+					dos.write(b); 
+					dos.flush();
 				}
 							 
 				dis.close(); 
@@ -92,7 +97,7 @@ class MyFrame01  extends JFrame implements ActionListener{
 
 public class Test01{
 	public static void main(String[] args) {
-		new MyFrame01("");
+		new MyFrame01("클라이언트");
 		
 	}
 }
