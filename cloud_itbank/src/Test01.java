@@ -4,16 +4,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
-
 import javax.swing.*;
+
 class MyFrame01  extends JFrame implements ActionListener{
 	
 	private JFileChooser jfc = new JFileChooser();
 	private JButton b1 = new JButton("파일선택");
 	private JButton b2 = new JButton("파일전송");
 	private TextField tf = new TextField(25);
-	private String file = "";
-	private String directory = "";
+	private String file;
+	private String directory;
 	private FileDialog fd;
 	
 	private InetAddress ia = null;
@@ -61,39 +61,38 @@ class MyFrame01  extends JFrame implements ActionListener{
 		
 		if(e.getSource() == b2){
 			try{
-			ia = InetAddress.getByName("localhost");
-			so = new Socket(ia,12345);
-			BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(so.getOutputStream()));
-			 bw.write(file+"\n"); bw.flush();
-			 
-			 DataInputStream dis=new DataInputStream(new FileInputStream(new File(tf.getText())));
-			 DataOutputStream dos=new DataOutputStream(so.getOutputStream());
-			 
-			 int b=0;
-			 
-			 while( (b=dis.read()) != -1 ){
-			 dos.write(b); dos.flush();
-			 }
-			
-			 
-			  dis.close(); dos.close(); so.close(); 
-			  dis=null; dos=null; so=null;
-			  System.exit(0);
+				ia = InetAddress.getByName("localhost");
+				so = new Socket(ia,12345);
+				BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(so.getOutputStream()));
+				bw.write(file+"\n"); 
+				bw.flush();
+				 
+				DataInputStream dis=new DataInputStream(new FileInputStream(new File(tf.getText())));
+				DataOutputStream dos=new DataOutputStream(so.getOutputStream());
+				 
+				int b=0;
+				 
+				while((b=dis.read()) != -1 ){
+					dos.write(b); dos.flush();
+				}
+							 
+				dis.close(); 
+				dos.close(); 
+				so.close(); 
+				dis=null; 
+				dos=null; 
+				so=null;
+				System.exit(0);
 			}catch (IOException e2) {
 				e2.printStackTrace();
 			}
 		}
-		
 	}
 }
 
 public class Test01{
-
 	public static void main(String[] args) {
-		
 		new MyFrame01("");
 		
-		
 	}
-
 }
