@@ -18,6 +18,8 @@ class MyFrame01  extends JFrame implements ActionListener{
 	
 	private InetAddress ia;
 	private Socket so;
+	private DataInputStream dis;
+	private DataOutputStream dos;
 	
 	public void init(){
 		jfc = new JFileChooser();
@@ -71,8 +73,8 @@ class MyFrame01  extends JFrame implements ActionListener{
 				bw.write(file+"\n"); 
 				bw.flush();
 				 
-				DataInputStream dis=new DataInputStream(new FileInputStream(new File(jtf.getText())));
-				DataOutputStream dos=new DataOutputStream(so.getOutputStream());
+				dis=new DataInputStream(new FileInputStream(new File(jtf.getText())));
+				dos=new DataOutputStream(so.getOutputStream());
 				 
 				int b=0;
 				 
@@ -84,13 +86,13 @@ class MyFrame01  extends JFrame implements ActionListener{
 				dis.close(); 
 				dos.close(); 
 				so.close(); 
-				dis=null; 
-				dos=null; 
-				so=null;
-				System.exit(0);
+				
 			}catch (IOException e2) {
 				e2.printStackTrace();
 			}
+			
+			
+			System.exit(0);
 		}
 	}
 }
