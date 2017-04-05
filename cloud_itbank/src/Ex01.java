@@ -1,4 +1,4 @@
-
+//UDP 메시지 보내기 예제
 
 import java.net.*;
 import java.io.*;
