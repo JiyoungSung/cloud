@@ -15,7 +15,7 @@ public class MemberDAO {
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet rs;
-	String url,user,pass;
+	String url,user,pass,rank,id,email,signday;
 	public MemberDAO(){
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -38,11 +38,11 @@ public class MemberDAO {
 			con=DriverManager.getConnection(url,user,pass);
 			ps=con.prepareStatement(sql);
 			rs=ps.executeQuery();
-     
-			while(rs.next()){//rs.next():hasNext()+next() 의 기능을가지고있다.
+			while(rs.next()){
 				int no=rs.getInt("no");
 				String rank=rs.getString("rank");
 				String id=rs.getString("id");
+				String pass=rs.getString("pass");
 				String email=rs.getString("email");
 				String signday=rs.getString("signday");
 				dos.writeUTF("넘버:"+no+"등급:"+rank
