@@ -1,11 +1,10 @@
 package project;
 
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,7 +22,7 @@ public class MemberDAO {
 			e.printStackTrace();
 			System.out.println("멤버dao 오라클접속 오류");
 		}
-		url="jdbc:oracle:this:@localhost:1521:xe";
+		url="jdbc:oracle:thin:@localhost:1521:xe";
 		user="project";
 		pass="project";
 	}
@@ -31,9 +30,9 @@ public class MemberDAO {
 		File dir2=new File("E:\\jsh_java_workspace\\201704_javaproject\\src\\project");
 		File f2=new File(dir2,"memberdb.txt");
 		String sql="select * from member";
-		FileOutputStream fos=new FileOutputStream(f2,true);
-		BufferedOutputStream bos=new BufferedOutputStream(fos);
-		DataOutputStream dos=new DataOutputStream(bos);
+		FileWriter fw=new FileWriter(f2,true);
+		BufferedWriter bw=new BufferedWriter(fw);
+		PrintWriter pw=new PrintWriter(bw);
 		try{
 			con=DriverManager.getConnection(url,user,pass);
 			ps=con.prepareStatement(sql);
@@ -45,17 +44,14 @@ public class MemberDAO {
 				String pass=rs.getString("pass");
 				String email=rs.getString("email");
 				String signday=rs.getString("signday");
-				dos.writeUTF("넘버:"+no+"등급:"+rank
-						+"아이디:"+id+"email:"+email+"signday:"+signday+"\n");
-				dos.flush();
+				pw.print("No:"+no+"Rank:"+rank
+						+"ID:"+id+"PASSWORD:"+pass+"Email:"+email+"Signday:"+signday+"\n");
+				pw.flush();
 			}	
 		}catch(SQLException e){
 			System.out.println("오류");
+			e.printStackTrace();
 		}
-		
-		/*dos.writeUTF("번호:"+dto.getNo()+"랭크:"+dto.getRank()+"아이디:"+dto.getId()+
-				"비밀번호:"+dto.getPass()+"이메일:"+dto.getEmail()+"가입날:"+dto.getSignday()+"\n");
-		dos.flush();*/
 	}
 	public int deleteMember(String name){
 		String sql="delete from member where name =?";
