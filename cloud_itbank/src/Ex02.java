@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 <<<<<<< Upstream, based on origin/merge_test2
 //UDP ¸Ş½ÃÁö ¹Ş±â ¿¹Á¦
 =======
 
 >>>>>>> 29ad1ed ì´í´ë¦½ìŠ¤ í…ŒìŠ¤íŠ¸ ì…ë‹ˆë‹¤
+=======
+//UDP ¸Ş½ÃÁö ¹Ş±â ¿¹Á¦
+>>>>>>> refs/heads/master
 
 import java.net.*;
 import java.io.*;
