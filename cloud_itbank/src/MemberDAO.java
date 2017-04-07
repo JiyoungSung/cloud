@@ -1,4 +1,4 @@
-package project;
+package project_client;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -38,14 +38,15 @@ public class MemberDAO {
 			ps=con.prepareStatement(sql);
 			rs=ps.executeQuery();
 			while(rs.next()){
-				int no=rs.getInt("no");
 				String rank=rs.getString("rank");
 				String id=rs.getString("id");
 				String pass=rs.getString("pass");
 				String email=rs.getString("email");
 				String signday=rs.getString("signday");
-				pw.print("No:"+no+"Rank:"+rank
-						+"ID:"+id+"PASSWORD:"+pass+"Email:"+email+"Signday:"+signday+"\n");
+				int membersize=rs.getInt("membersize");
+				pw.print("Rank:"+rank
+						+"ID:"+id+"PASSWORD:"+pass+"Email:"+email+"Signday:"+signday+"Membersize:"
+						+"\n");
 				pw.flush();
 			}	
 		}catch(SQLException e){

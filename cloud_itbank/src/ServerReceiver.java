@@ -6,10 +6,14 @@ import javax.swing.*;
 
 public class ServerReceiver {
 
-	public static void main(String[] args) {
+	public ServerReceiver() {
+		
 		try {
-			ServerSocket ss = new ServerSocket(12345);
+			ServerSocket ss = new ServerSocket(12346);
+			System.out.println("서버대기중....");
+			
 			Socket s = ss.accept();
+			System.out.println(s.toString());
 			InputStream is = s.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 

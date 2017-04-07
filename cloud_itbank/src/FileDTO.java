@@ -4,7 +4,7 @@ public class FileDTO {
 private String id;
 private String fileid;
 private String upload;
-private Double filesize;
+private int filesize;
 private int num;
 public String getId() {
 	return id;
@@ -24,10 +24,10 @@ public String getUpload() {
 public void setUpload(String upload) {
 	this.upload = upload;
 }
-public Double getFilesize() {
+public int getFilesize() {
 	return filesize;
 }
-public void setFilesize(Double filesize) {
+public void setFilesize(int filesize) {
 	this.filesize = filesize;
 }
 public int getNum() {
