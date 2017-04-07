@@ -1,4 +1,8 @@
+<<<<<<< Upstream, based on origin/merge_test2
 //UDP ¸Ş½ÃÁö º¸³»±â ¿¹Á¦
+=======
+
+>>>>>>> 29ad1ed ì´í´ë¦½ìŠ¤ í…ŒìŠ¤íŠ¸ ì…ë‹ˆë‹¤
 
 import java.net.*;
 import java.io.*;
