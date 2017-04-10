@@ -1,4 +1,4 @@
-package project_client;
+package project_1;
 
 import java.awt.BorderLayout;
 
@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class login_Gui extends JFrame implements ActionListener {
+public class ClientMain extends JFrame implements ActionListener {
 	private JLabel id_Label = new JLabel("아이디");
 	private JLabel Pass_Label = new JLabel("패스워드");
 	private JTextField id_Field = new JTextField(25);
@@ -58,7 +58,7 @@ public class login_Gui extends JFrame implements ActionListener {
 		sign_Button.addActionListener(this);
 	}
 
-	public login_Gui() {
+	public ClientMain() {
 		super("클라우드");
 		if (log.start()) {
 			this.init();
@@ -101,7 +101,7 @@ public class login_Gui extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		new login_Gui();
+		new ClientMain();
 	}
 
 }

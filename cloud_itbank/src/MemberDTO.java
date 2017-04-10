@@ -1,11 +1,11 @@
-package project_client;
-
+package project_1;
 public class MemberDTO {
 	private String id;
 	private String pass;
 	private String email;
-	private String day;
+	private String signday;
 	private String rank;
+	private int membersize;
 	
 	public String getPass() {
 		return pass;
@@ -13,11 +13,11 @@ public class MemberDTO {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
-	public String getDay() {
-		return day;
+	public String getSignday() {
+		return signday;
 	}
-	public void setDay(String day) {
-		this.day = day;
+	public void setSingday(String signday) {
+		this.signday = signday;
 	}
 	
 	public String getId() {
@@ -38,4 +38,12 @@ public class MemberDTO {
 	public void setRank(String rank) {
 		this.rank = rank;
 	}
+	public int getMembersize() {
+		return membersize;
+	}
+	public void setMembersize(int membersize) {
+		this.membersize = membersize;
+	}
+	
+	
 }

@@ -1,4 +1,4 @@
-package project_client;
+package project_1;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +18,11 @@ public class FileUp extends JFrame implements ActionListener {
 	private InetAddress ia = null;
 	private Socket so = null;
 	MemberDTO mem=new MemberDTO();
+	MemberDAO mdao = new MemberDAO();
+	FileDAO fdao = new FileDAO();
 	private String id;
+	private String filesize;
+	private File f = null;
 	
 	public void init() {
 		Container con = this.getContentPane();
@@ -51,7 +55,8 @@ public class FileUp extends JFrame implements ActionListener {
 		super.setResizable(false);
 		super.setVisible(true);
 	}
-
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -61,6 +66,9 @@ public class FileUp extends JFrame implements ActionListener {
 			directory = fd.getDirectory();
 			file = fd.getFile();
 			tf.setText(directory + file);
+			f = new File(tf.getText());
+			long a = f.length();
+			filesize = String.valueOf(a);
 		}
 
 		if (e.getSource() == b2) {
@@ -79,13 +87,15 @@ public class FileUp extends JFrame implements ActionListener {
 					dos.write(b);
 					dos.flush();
 				}
+				fdao.File_Save(id, file, filesize); // 파일DB에 파일저장
+				mdao.SizePluse(Integer.parseInt(filesize), id); // 멤버DB에 파일사이즈 ++
+				
+//				FileSave fs = new FileSave(id,file,filesize);
+//				fs.File_Save();
+				
 				JOptionPane.showMessageDialog(null, "파일업로드 완료");
-				dis.close();
-				dos.close();
-				so.close();
-				dis = null;
-				dos = null;
-				so = null;
+				dis.close(); dos.close(); so.close();
+				dis = null; dos = null;	so = null;
 				this.setVisible(false);
 			} catch (IOException e2) {
 				e2.printStackTrace();

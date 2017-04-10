@@ -1,11 +1,11 @@
-package project;
-
+package project_1;
 public class FileDTO {
 private String id;
 private String fileid;
 private String upload;
 private int filesize;
 private int num;
+
 public String getId() {
 	return id;
 }

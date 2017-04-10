@@ -1,19 +1,10 @@
-package project_client;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+package project_1;
+import java.io.*;
+import java.net.*;
+import java.sql.*;
+import java.text.*;
 import java.util.*;
+import java.util.Date;
 
 public class LogPro {
 	Connection con;
@@ -22,22 +13,23 @@ public class LogPro {
 	public boolean start() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			System.out.println("µå¶óÀÌ¹ö ¼³Ä¡ ¼º°ø");
+			System.out.println("ï¿½ë±¶ï¿½ì”ªï¿½ì” è¸°ï¿½ ï¿½ê½•ç§»ï¿½ ï¿½ê½¦æ€¨ï¿½");
 
 		} catch (ClassNotFoundException e) {
-			System.out.println("¼³Ä¡½ÇÆÐ");
+			System.out.println("ï¿½ê½•ç§»ì„ë–Žï¿½ë™£");
 		}
 		con = null;
-		String url = "jdbc:oracle:thin:@192.168.52.189:1521:xe";
-		// ¿À¶óÅ¬ url½ÃÀÛÇÒ‹š´Â ÀÌ·¸°Ô ½á¾ßµÈ´Ù. jdbc: ~ :thin±îÁö ½á¾ßµÊ.
-		// localhost´Â ÀÚ±âÀÚ½Å
-		// 1521 Æ÷Æ®¹øÈ£
-		// xe ¿À¶óÅ¬ ¹öÁ¯.
+//		String url = "jdbc:oracle:thin:@192.168.52.189:1521:xe";
+		String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+		// ï¿½ì‚¤ï¿½ì”ªï¿½ê²¢ urlï¿½ë–†ï¿½ì˜‰ï¿½ë¸·í˜¢í˜³ï¿½ë’— ï¿½ì” ï¿½ì ƒå¯ƒï¿½ ï¿½ëœ¥ï¿½ë¹žï¿½ë§‚ï¿½ë–Ž. jdbc: ~ :thinæºëš¯ï¿½ ï¿½ëœ¥ï¿½ë¹žï¿½ë§–.
+		// localhostï¿½ë’— ï¿½ì˜„æ¹²ê³—ì˜„ï¿½ë–Š
+		// 1521 ï¿½ë£·ï¿½ë“ƒè¸°ëŠìƒ‡
+		// xe ï¿½ì‚¤ï¿½ì”ªï¿½ê²¢ è¸°ê¾©ì¡.
 		String user = "project";
 		String pass = "project";
 		try {
 			con = DriverManager.getConnection(url, user, pass);
-			System.out.println("¿À¶óÅ¬¿¬°á¼º°ø");
+			System.out.println("ï¿½ì‚¤ï¿½ì”ªï¿½ê²¢ï¿½ë¿°å¯ƒê³—ê½¦æ€¨ï¿½");
 			return true;
 		} catch (SQLException s) {
 			s.printStackTrace();
@@ -45,7 +37,7 @@ public class LogPro {
 		return false;
 	}
 
-	public boolean ID_overlap(String id) {// ¾ÆÀÌµð°¡ Áßº¹µÇ´ÂÁö¸¦ °ËÁõÇÏ´Â ¸Þ¼ÒµåÀÌ´Ù.
+	public boolean ID_overlap(String id) {// ï¿½ë¸˜ï¿½ì” ï¿½ëµ’åª›ï¿½ ä»¥ë¬ë‚¬ï¿½ë¦ºï¿½ë’—ï§žï¿½ç‘œï¿½ å¯ƒï¿½ï§ì•ºë¸¯ï¿½ë’— ï§Žë¶¿ëƒ¼ï¿½ë±¶ï¿½ì” ï¿½ë–Ž.
 		String sql = "select *from member";
 		try {
 			ps = null;
@@ -53,67 +45,67 @@ public class LogPro {
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 
-			while (rs.next()) {// hasNext()+next()°¡¸®Å°´Â°÷¿¡ µ¥ÀÌÅÍ¸¦ ²¨³»¿Â´Ù.
+			while (rs.next()) {// hasNext()+next()åª›ï¿½ç”±Ñ‹ê¶Žï¿½ë’—æ€¨ë…¹ë¿‰ ï¿½ëœ²ï¿½ì” ï¿½ê½£ç‘œï¿½ çˆ°ì‡°ê¶¡ï¿½ì‚©ï¿½ë–Ž.
 				String id1 = rs.getString("id");
 
 				if (id1.equals(id)) {
-					// ´ÙÀ½ ¸ñ·ÏÃ¢À» ¶ç¿î´Ù.
-					return true;// Áßº¹ÀÌ¶ó¸é true
+					// ï¿½ë–Žï¿½ì“¬ ï§â‘¸ì¤‰ï§¡ìŽŒì“£ ï¿½ì“£ï¿½ìŠ«ï¿½ë–Ž.
+					return true;// ä»¥ë¬ë‚¬ï¿½ì” ï¿½ì”ªï§Žï¿½ true
 
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;// Áßº¹ÀÌ¾Æ´Ï¶ó¸é false
+		return false;// ä»¥ë¬ë‚¬ï¿½ì” ï¿½ë¸˜ï¿½ë•²ï¿½ì”ªï§Žï¿½ false
 
 	}
 
-	public String ID_return(String email) {// ÀÌ¸ÞÀÏ·Î ¾ÆÀÌµð¸¦ Ã£´Â´Ù.
+	public String ID_return(String email) {// ï¿½ì” ï§Žë¶¿ì”ªæ¿¡ï¿½ ï¿½ë¸˜ï¿½ì” ï¿½ëµ’ç‘œï¿½ ï§¡ì–œë’—ï¿½ë–Ž.
 		String sql = "select *from member";
 		try {
 			ps = null;
 			ResultSet rs = null;
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
-			while (rs.next()) {// hasNext()+next()°¡¸®Å°´Â°÷¿¡ µ¥ÀÌÅÍ¸¦ ²¨³»¿Â´Ù.
+			while (rs.next()) {// hasNext()+next()åª›ï¿½ç”±Ñ‹ê¶Žï¿½ë’—æ€¨ë…¹ë¿‰ ï¿½ëœ²ï¿½ì” ï¿½ê½£ç‘œï¿½ çˆ°ì‡°ê¶¡ï¿½ì‚©ï¿½ë–Ž.
 				String email1 = rs.getString("email");
 
 				if (email1.equals(email)) {
 
-					return rs.getString("id");// ÀÌ¸ÞÀÏÀÌÀÖ´Ù¸é id¸¦¹ÝÈ¯
+					return rs.getString("id");// ï¿½ì” ï§Žë¶¿ì”ªï¿½ì” ï¿½ì—³ï¿½ë–Žï§Žï¿½ idç‘œì‡°ì»²ï¿½ì†š
 
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "1";// ½ÇÆÐ½Ã 1¹ÝÈ¯.
+		return "1";// ï¿½ë–Žï¿½ë™£ï¿½ë–† 1è«›ì„‘ì†š.
 	}
 
-	public String IDEamil_pass_return(String id, String email) {// ¾ÆÀÌµð ÀÌ¸ÞÀÏ ¹Þ¾Æ¼­
-																// passÃâ·Â.
+	public String IDEamil_pass_return(String id, String email) {// ï¿½ë¸˜ï¿½ì” ï¿½ëµ’ ï¿½ì” ï§Žë¶¿ì”ª è«›ì†ë¸˜ï¿½ê½Œ
+																// passç•°ì’•ì °.
 		String sql = "select *from member";
 		try {
 			ps = null;
 			ResultSet rs = null;
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
-			while (rs.next()) {// hasNext()+next()°¡¸®Å°´Â°÷¿¡ µ¥ÀÌÅÍ¸¦ ²¨³»¿Â´Ù.
+			while (rs.next()) {// hasNext()+next()åª›ï¿½ç”±Ñ‹ê¶Žï¿½ë’—æ€¨ë…¹ë¿‰ ï¿½ëœ²ï¿½ì” ï¿½ê½£ç‘œï¿½ çˆ°ì‡°ê¶¡ï¿½ì‚©ï¿½ë–Ž.
 				String email1 = rs.getString("email");
 				String id1 = rs.getString("id");
 				if (email1.equals(email) && id1.equals(id)) {
-					return rs.getString("pass");// ÀÌ¸ÞÀÏÀÌÀÖ´Ù¸é pass¸¦¹ÝÈ¯
+					return rs.getString("pass");// ï¿½ì” ï§Žë¶¿ì”ªï¿½ì” ï¿½ì—³ï¿½ë–Žï§Žï¿½ passç‘œì‡°ì»²ï¿½ì†š
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return "1";// ½ÇÆÐÇßÀ»¶§ÀÇ °æ¿ì.
+		return "1";// ï¿½ë–Žï¿½ë™£ï¿½ë»½ï¿½ì“£ï¿½ë¸£ï¿½ì“½ å¯ƒìŽŒìŠ¦.
 	}
 
-	public MemberDTO info(String id) {// ¾ÆÀÌµð ÀÔ·Â½Ã È¸¿øÁ¤º¸¸¦ ÀüÃ¼¸¦³Ö´Â´Ù.
+	public MemberDTO info(String id) {// ï¿½ë¸˜ï¿½ì” ï¿½ëµ’ ï¿½ì—¯ï¿½ì °ï¿½ë–† ï¿½ì‰¶ï¿½ìï¿½ì ™è¹‚ëŒ€ï¿½ï¿½ ï¿½ìŸ¾ï§£ëŒ€ï¿½ì‡°ê½”ï¿½ë’—ï¿½ë–Ž.
 		String sql = "select *from member where id=?";
 		MemberDTO dto = new MemberDTO();
 		try {
@@ -126,7 +118,7 @@ public class LogPro {
 				dto.setId(rs.getString("id"));
 				dto.setPass(rs.getString("pass"));
 				dto.setEmail(rs.getString("email"));
-				dto.setDay(rs.getString("signday"));
+				dto.setSingday(rs.getString("signday"));
 				dto.setRank(rs.getString("rank"));
 			}
 		} catch (SQLException e) {
@@ -135,9 +127,9 @@ public class LogPro {
 		return dto;
 	}
 
-	public void IDEamil_pass_change(String email, String pass, String pass1){// ÀÌ¸ÞÀÏ
-																				// ÆÐ½º¹Þ¾Æ¼­
-																				// ÆÐ½º¼öÁ¤.
+	public void IDEamil_pass_change(String email, String pass, String pass1){// ï¿½ì” ï§Žë¶¿ì”ª
+																				// ï¿½ë™£ï¿½ë’ªè«›ì†ë¸˜ï¿½ê½Œ
+																				// ï¿½ë™£ï¿½ë’ªï¿½ë‹”ï¿½ì ™.
 		String sql = "update member  set pass=? where email=?,pass=?";
 		try {
 			ps = null;
@@ -171,26 +163,26 @@ public class LogPro {
 		return t;
 	}
 
-	public void member_add(String id, String pass, String email, String rank) {// È¸¿ø°¡ÀÔ¹öÆ°À»´­·¶À»¶§.
-
+	public void member_add(String id, String pass, String email, String rank) {// ï¿½ì‰¶ï¿½ìåª›ï¿½ï¿½ì—¯è¸°ê¾ªë“‰ï¿½ì“£ï¿½ë‹ƒï¿½ï¿½ï¿½ì“£ï¿½ë¸£.
+		
 		Calendar cal = Calendar.getInstance();
-		String sql1 = "insert into member values(?,?,?,?,?,?)";// ¿©±â¼­ »èÁ¦µµ°¡´É.
+		String sql1 = "insert into member values(?,?,?,?,?,?)";// ï¿½ë¿¬æ¹²ê³—ê½Œ ï¿½ê¶˜ï¿½ì £ï¿½ë£„åª›ï¿½ï¿½ë’«.
 		try {
-			ps = con.prepareStatement(sql1); // con ´Ù¸®¿¬°á. º¸³»±â¸¸ÇßÀ½.
-			ps.setString(1, rank); // 1 ¹«·á ,2 À¯·á
-			ps.setString(2, id); // 2¹øÂ° ¹°À½Ç¥, ¾ÆÀÌµð
-			ps.setString(3, pass); // 3¹øÂ° ¹°À½Ç¥ , ºñ¹Ð¹øÈ£
-			ps.setString(4, email); // 4¹øÂ°¹°À½Ç¥
+			ps = con.prepareStatement(sql1); // con ï¿½ë–Žç”±ÑŠë¿°å¯ƒï¿½. è¹‚ëŒ€ê¶¡æ¹²ê³•ì­”ï¿½ë»½ï¿½ì“¬.
+			ps.setString(1, rank); // 1 è‡¾ëŒ€ì¦º ,2 ï¿½ì‘€çŒ·ï¿½
+			ps.setString(2, id); // 2è¸°ë‰ãŽ è‡¾ì‡±ì“¬ï¿½ëª´, ï¿½ë¸˜ï¿½ì” ï¿½ëµ’
+			ps.setString(3, pass); // 3è¸°ë‰ãŽ è‡¾ì‡±ì“¬ï¿½ëª´ , é®ê¾¨ï¿½è¸°ëŠìƒ‡
+			ps.setString(4, email); // 4è¸°ë‰ãŽè‡¾ì‡±ì“¬ï¿½ëª´
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = new Date();
 			ps.setString(5, new String(sdf.format(date)));
 			ps.setInt(6, 0);
-			int res = ps.executeUpdate(); // ¾÷µ¥ÀÌÆ®¸¦ ½ÇÇàÇÏ´Â°Í.
+			int res = ps.executeUpdate(); // ï¿½ë¾½ï¿½ëœ²ï¿½ì” ï¿½ë“ƒç‘œï¿½ ï¿½ë–Žï¿½ë»¾ï¿½ë¸¯ï¿½ë’—å¯ƒï¿½.
 			System.out.println("res=" + res);
 			if (res > 0) {
-				System.out.println("ÀÚ·áµî·Ï¼º°ø");
+				System.out.println("ï¿½ì˜„çŒ·ëš®ë²‘æ¿¡ì•¹ê½¦æ€¨ï¿½");
 			} else {
-				System.out.println("ÀÚ·áµî·Ï ½ÇÆÐ");
+				System.out.println("ï¿½ì˜„çŒ·ëš®ë²‘æ¿¡ï¿½ ï¿½ë–Žï¿½ë™£");
 			}
 		} catch (SQLException e) {
 			e.getStackTrace();

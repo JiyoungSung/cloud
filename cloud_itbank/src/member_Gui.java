@@ -1,5 +1,4 @@
-package project_client;
-
+package project_1;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

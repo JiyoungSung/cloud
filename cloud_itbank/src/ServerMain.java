@@ -1,13 +1,12 @@
-package project;
-
+package project_1;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
-import project_client.Serverupload;
-public class Server extends Thread{
+
+public class ServerMain extends Thread{
 	
-	public Server(){
+	public ServerMain(){
 		this.start();
 		new Serverupload();
 		
@@ -17,6 +16,6 @@ public class Server extends Thread{
 		ServerReceiver sr=new ServerReceiver();
 	}
 	public static void main(String[] args){
-	new Server();	
+	new ServerMain();	
 	}
 }

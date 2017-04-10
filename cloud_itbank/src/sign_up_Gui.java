@@ -1,5 +1,4 @@
-package project_client;
-
+package project_1;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -116,11 +115,11 @@ public class sign_up_Gui extends JFrame implements ActionListener {
 		if (e.getSource() == sign_Button) {
 			log.member_add(id_Field.getText(), pass_Field.getText(), email_Field.getText(), rank);
 			this.setVisible(false);
-			new login_Gui();
+			new ClientMain();
 		}
 		if (e.getSource() == cancel_Button) {
 			this.setVisible(false);
-			new login_Gui();
+			new ClientMain();
 		}
 		if (e.getSource() == jtbt1) {
 			rank="free";

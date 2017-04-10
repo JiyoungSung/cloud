@@ -1,5 +1,4 @@
-package project_client;
-
+package project_1;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -27,7 +26,8 @@ public class MemberDAO {
 		pass="project";
 	}
 	public void SaveMember() throws IOException{
-		File dir2=new File("E:\\jsh_java_workspace\\201704_javaproject\\src\\project");
+		File dir2=new File("E:"+File.separator+"jsh_java_workspace"+File.separator+"201704_javaproject"+File.separator+
+				"src"+File.separator+"project");
 		File f2=new File(dir2,"memberdb.txt");
 		String sql="select * from member";
 		FileWriter fw=new FileWriter(f2,true);
@@ -46,7 +46,7 @@ public class MemberDAO {
 				int membersize=rs.getInt("membersize");
 				pw.print("Rank:"+rank
 						+"ID:"+id+"PASSWORD:"+pass+"Email:"+email+"Signday:"+signday+"Membersize:"
-						+"\n");
+						+membersize+"\n");
 				pw.flush();
 			}	
 		}catch(SQLException e){
@@ -65,8 +65,32 @@ public class MemberDAO {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-return res;
+		return res;
 	}
+	
+	public void SizePluse(int a, String id){
+		
+		String sql = "select * from member";
+		
+		try{
+			con = DriverManager.getConnection(url,user,pass);
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				MemberDTO mem = new MemberDTO();
+				int size = rs.getInt("membersize");
+				System.out.println("size =>" + size);
+				System.out.println("a =>" + a);
+				size += a;
+				String sql2 = "update member set membersize='"+ size + "' where id='" + id +"'";
+				ps = con.prepareStatement(sql2);
+				ps.executeUpdate();
+			}
+			
+		}catch (SQLException e) { e.printStackTrace(); }
+		
+	}
+	
 	
 	
 }
