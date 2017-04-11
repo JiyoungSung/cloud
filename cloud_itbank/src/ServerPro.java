@@ -15,6 +15,10 @@ class FileTransfer{
 			System.out.println("Server ready...");
 			soc = ss.accept();
 			br = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+			String filename = br.readLine();
+			FileReceiver_s fr = new FileReceiver_s(soc, filename);
+			fr.start();
+			/*
 			switch(numPro){
 			case 0: {
 				String filename = br.readLine();
@@ -32,9 +36,8 @@ class FileTransfer{
 			case 8: break;
 			case 9: break;
 			
-			}
+			}*/
 		}
-		
 		
 		//파일 업로드 : 0
 		//파일 다운로드 : 1

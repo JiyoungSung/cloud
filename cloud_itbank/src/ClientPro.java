@@ -218,7 +218,7 @@ class ClientFrame extends JFrame implements DropTargetListener, TreeWillExpandLi
 				while (stk.hasMoreTokens()) {
 					filepath += stk.nextToken().trim() + "/";
 				}
-				// System.out.println("file = " + filepath);
+				//System.out.println("file = " + filepath);
 				File dir = new File(filepath);
 				File[] data = dir.listFiles();
 				if (data == null) {
@@ -226,7 +226,7 @@ class ClientFrame extends JFrame implements DropTargetListener, TreeWillExpandLi
 				}
 				DefaultMutableTreeNode imsi = (DefaultMutableTreeNode)e.getPath().getLastPathComponent();
 				imsi.removeAllChildren();
-				view_vc.clear();
+				//view_vc.clear();
 				
 				if (data.length == 0) {
 					imsi.add(new DefaultMutableTreeNode("EMPTY"));
@@ -234,16 +234,11 @@ class ClientFrame extends JFrame implements DropTargetListener, TreeWillExpandLi
 					int count = -1;
 					for (int i = 0; i < data.length; i++) {
 						if (data[i].isDirectory()) {
-							DefaultMutableTreeNode dtm = new DefaultMutableTreeNode(
-									data[i].getName());
+							DefaultMutableTreeNode dtm = new DefaultMutableTreeNode(data[i].getName());
 							dtm.add(new DefaultMutableTreeNode("EMPTY"));
 							imsi.add(dtm);
 							count++;
-						} else {
-							view_vc.add(data[i].getName() + " ("
-									+ data[i].length() + "byte, "
-									+ new Date(data[i].lastModified()) + ")");
-						}
+						} 
 					}
 					if (count == -1) {
 						imsi.add(new DefaultMutableTreeNode("EMPTY"));
