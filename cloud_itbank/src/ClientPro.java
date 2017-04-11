@@ -10,7 +10,8 @@ import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 
 import java.awt.dnd.*;
-import java.io.File;
+import java.io.*;
+import java.net.*;
 
 class ClientFrame extends JFrame implements DropTargetListener, TreeWillExpandListener{
 	private Dimension screen;
@@ -129,7 +130,7 @@ class ClientFrame extends JFrame implements DropTargetListener, TreeWillExpandLi
 		*/
 		
 		//드래그앤 드롭
-		dt = new DropTarget(file_ta, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
+		dt = new DropTarget(tree_jt, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
 		
 	}
 	public void start(){
@@ -166,7 +167,7 @@ class ClientFrame extends JFrame implements DropTargetListener, TreeWillExpandLi
 	}
 	@Override
 	public void drop(DropTargetDropEvent dtde) {
-		System.out.println("dragDrop");
+		//System.out.println("dragDrop");
         if ((dtde.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0){
             dtde.acceptDrop(dtde.getDropAction());
             Transferable tr = dtde.getTransferable();
@@ -175,7 +176,18 @@ class ClientFrame extends JFrame implements DropTargetListener, TreeWillExpandLi
                 List list = (List) tr.getTransferData(DataFlavor.javaFileListFlavor);
                 //파일명 출력
                 for(int i=0;i < list.size();i++){
-                    System.out.println(list.size() + "-" + list.get(i));
+                    //System.out.println(list.size() + "-" + list.get(i));
+                	File file = (File)list.get(i);
+                    System.out.println(file.getName());
+                    String filename = list.get(i).toString();
+                    try{
+                    	InetAddress ia = InetAddress.getByName("localhost");
+                    	Socket soc = new Socket(ia, 12345);
+                    	PrintWriter pw = new PrintWriter(soc.getOutputStream(), true);
+                    	pw.println(file.getName());
+                    	FileSender_c fs = new FileSender_c(soc, filename);
+                    	fs.start();
+                    }catch(IOException e){}
                 }
             }
             catch (Exception e){
@@ -243,11 +255,62 @@ class ClientFrame extends JFrame implements DropTargetListener, TreeWillExpandLi
 		}
 	}
 }
+
+class FileSender_c extends Thread {
+    Socket socket;
+    DataOutputStream dos;
+    FileInputStream fis;
+    BufferedInputStream bis;
+    String filename;
+    int control = 0;
+    public FileSender_c(Socket socket,String filestr) {
+        this.socket = socket;
+        this.filename = filestr;
+        try {
+            // 데이터 전송용 스트림 생성
+            dos = new DataOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+  
+    @Override
+    public void run() {
+        try {
+  
+            String fName = filename;
+  
+            // 파일 내용을 읽으면서 전송
+            File f = new File(fName);
+            fis = new FileInputStream(f);
+            bis = new BufferedInputStream(fis);
+  
+            int len;
+            int size = 4096;
+            byte[] data = new byte[size];
+            while ((len = bis.read(data)) != -1) {
+                dos.write(data, 0, len);
+                dos.flush();
+            }
+            
+            dos.close();
+            bis.close();
+            fis.close();
+            System.out.println("완료");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
 public class ClientPro {
 	public static void main(String[] args){
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception ee) {}
+		
 		ClientFrame cf = new ClientFrame("클라이언트");
+		
+		
 	}
 }
