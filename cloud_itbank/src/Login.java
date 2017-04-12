@@ -2,6 +2,7 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.*;
 
 import javax.swing.*;
 
@@ -30,6 +31,28 @@ class Login extends JFrame implements MouseListener{
 	public String getPass(){
 		return pass;
 	}
+	//아이디 저장
+	private File f = new File("cloud_id");
+	
+	public void saveId(){
+		if(!f.canRead()) return;
+		String cloudId="";
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			while(true){
+				int res = fis.read();
+				if(res < 0) break;
+				cloudId += (char)res;
+			}
+			if(cloudId == null) return;
+			id_jtf.setText(cloudId);
+			pass_jtf.setText("");
+			constant_cb.setState(true);
+			fis.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void init(){
 		//설정
@@ -41,6 +64,7 @@ class Login extends JFrame implements MouseListener{
 		con.add("North", title_jlb);
 		id_jtf = new JTextField("Cloud ID", 18);
 		pass_jtf = new JPasswordField("비밀번호", 14);
+		
 		id_jtf.setFont(new Font("", Font.BOLD, 20));
 		pass_jtf.setFont(new Font("", Font.BOLD, 20));
 		constant_cb = new Checkbox();
@@ -66,6 +90,9 @@ class Login extends JFrame implements MouseListener{
 		make_id_jlb = new JLabel("ID가 없으십니까? 지금 만드세요.", JLabel.CENTER);
 		bottom_p.add(find_id_jlb);
 		bottom_p.add(make_id_jlb);
+		
+		//아이디 저장 불러오는 메소드
+		this.saveId();
 		
 	}
 	public void start(){
@@ -165,6 +192,22 @@ class Login extends JFrame implements MouseListener{
 			String id = id_jtf.getText();
 			char[] pass = pass_jtf.getPassword();
 			this.id = id;
+			
+			//체크되면 아이디 파일에 저장
+			if(constant_cb.getState()){
+				try {
+					FileOutputStream fos = new FileOutputStream(f, false);
+					byte by[] = id.getBytes();
+					fos.write(by);
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if(!constant_cb.getState()){
+				f.delete();
+			}
+			
 			for(int i=0;i<pass.length;i++){
 				this.pass+=pass[i];
 			}
